@@ -4,6 +4,7 @@ import pandas as pd
 import input_arquivos
 import quantidadeLinhas
 import salvarArquivoCSV
+import conexao
 
 # informações do arquivo de Upload
 
@@ -339,27 +340,28 @@ while contadorDados < len(minutoEntrada): # Pegando números contabilizados de p
   # dados_pre_para_DF = dfEntradas
   contadorDados += 1
 
+# print(listaGeralFinalParaDF[5])
 ######################################################################################################################
 # Compilação dos resultdos para um novo após o filtro Data Frame
 # Ideia de poder usar como JSON
 
-dfDadosGerais = {'Total de Operações': totalOperacoes,
-                 'Total Greens': green,
-                 'Total Reds': red,
-                 'Aproveitamento': "{:.2f}%".format(aproveitamentoGreen),
-                 'Proporcionalidade': "Criar" }
-
-dfEntradas = {'ID': contador,
-              'Data': dataEventoSimples,
-              'Competição': torneioDaEntrada,
-              'Evento': timesNoEvento,
-              'Odd de Entrada': entradas,
-              'Minuto Entrada': minutoEntrada, # Tratar Falha, pois terá chogos que não havera saida, pq foi Green. Todos terão entradas mas não todos saidas e sua ordem.
-              'Odd de Saida': saidas,
-              'Minuto Saida': minutoSaida,
-              'Tempo de Operação': tempoExpostoNaOperacao,
-              'Red ou Green': resultadoOperacao
-              }
+# dfDadosGerais = {'Total de Operações': totalOperacoes,
+#                  'Total Greens': green,
+#                  'Total Reds': red,
+#                  'Aproveitamento': "{:.2f}%".format(aproveitamentoGreen),
+#                  'Proporcionalidade': "Criar" }
+#
+# dfEntradas = {'ID': contador,
+#               'Data': dataEventoSimples,
+#               'Competição': torneioDaEntrada,
+#               'Evento': timesNoEvento,
+#               'Odd de Entrada': entradas,
+#               'Minuto Entrada': minutoEntrada, # Tratar Falha, pois terá chogos que não havera saida, pq foi Green. Todos terão entradas mas não todos saidas e sua ordem.
+#               'Odd de Saida': saidas,
+#               'Minuto Saida': minutoSaida,
+#               'Tempo de Operação': tempoExpostoNaOperacao,
+#               'Red ou Green': resultadoOperacao
+#               }
 
 # print(dfDadosGerais)
 # print("\n")
@@ -379,4 +381,24 @@ if escolhaSalvar == 1:
         salvarArquivoCSV.dataframeParaCSV(novaDFGeral)
     except:
         print("Falha na criação do arquivo ...... ERRO")
+
+######################################################################################################################
+### Input direto no banco de dados Alvo:
+
+
+
+#chamando função:
+
+escolhabancodedados = int(input("\nDeseja inserir os dados no banco de dados?(1-Sim)"))
+if escolhabancodedados == 1:
+    indiceDados = 0
+    while indiceDados < len(minutoEntrada):
+        try:
+            conexao.inserindoDados(listaGeralFinalParaDF[indiceDados])
+            print(f"\nDados inseridos na tabela ...... SUCESSO")
+        except:
+            print("\nFalha ao tentar inserir os dados na tabela no MYSQL ...... ERRO")
+        indiceDados += 1
+
+
 

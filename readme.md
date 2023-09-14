@@ -36,6 +36,7 @@ OBS: Observar inicio dos troneios Europeus antes de fazer algumas metricas ou aj
 # Instalaçãoes:
 
 1. pip install pandas
+2. pip install mysql-connector-python (link: https://dev.mysql.com/doc/connector-python/en/connector-python-example-cursor-transaction.html)
 
 # Importações
 
@@ -44,3 +45,9 @@ OBS: Observar inicio dos troneios Europeus antes de fazer algumas metricas ou aj
 3. import pandas as pd
 4. import csv
 5. import os
+6. import mysql.connector
+7. from mysql.connector import errorcode
+8. from mysql.connector import (connection)
+9. import os.path
+10. import time
+11. import sys
